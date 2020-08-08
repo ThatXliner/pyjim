@@ -1,12 +1,11 @@
 # flake8: noqa
 from pathlib import Path
 import re
-
+from os import path
 try:
     from pyproj import __version__, SyncVersion
 except ImportError:
     import sys
-    from os import path
 
     sys.path.insert(0, str(path.dirname(path.dirname(path.abspath(__file__)))))
     try:
