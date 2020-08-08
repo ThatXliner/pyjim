@@ -99,6 +99,11 @@ def main():  # noqa
         "help", help="For getting help about other commands."
     )
     args = parser.parse_args(sys.argv[1:])
+    version_args = version_command.parse_args(sys[1:])
+    info_args = info_command.parse_args(sys[1:])
+    build_args = build_command.parse_args(sys.argv[1:])
+    help_args = help_command.parse_args(sys.argv[1:])
+    upload_command = upload_command_.parse_args(sys.argv[1:])
     return None
 
 
