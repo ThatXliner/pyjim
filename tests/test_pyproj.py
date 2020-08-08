@@ -27,3 +27,6 @@ class TestClass(object):
         return SyncVersion.find_version_files(
             str(path.dirname(path.dirname(path.abspath(__file__))))
         )
+
+
+print(list(map(str, TestClass().test_sync_version())))

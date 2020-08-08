@@ -1,14 +1,15 @@
 from pathlib import Path
 import blessings
 import os
-from typing import List
 import re
 
 # import glob
 
 
-def find_version_files(root_dir: str) -> List[Path]:
-    """This function will find the __init__.py(s) in a nontest directory.
+def find_version_files(root_dir: str, dont_search_dir_names: set) -> list:
+    """You can use this.
+
+    This function will find the __init__.py(s) in a nontest directory.
 
     :param str root_dir: Description of parameter `root_dir`.
     :return: Description of returned object.
@@ -20,6 +21,12 @@ def find_version_files(root_dir: str) -> List[Path]:
         if not isinstance(root_dir, str)
         else Path(root_dir).expanduser()
     )
+    dont_search_dir_names = (
+        set(dont_search_dir_names)
+        if not isinstance(dont_search_dir_names, set)
+        else dont_search_dir_names
+    )
+
     try:
         assert root_dir.exists() and root_dir.is_dir()
     except AssertionError:
@@ -27,14 +34,14 @@ def find_version_files(root_dir: str) -> List[Path]:
             "Root directory is invalid: it either does not exist or is not a directory"
         )
 
-    def recursive_find(rd):
+    def recursive_find(rd, dsdn):
         version_files = []
         rd = Path(str(rd)).expanduser()
         with os.scandir(str(rd)) as scan_rd:
             for entry in scan_rd:
                 if entry.is_dir() and not (
                     entry.name.startswith(".")
-                    or entry.name.lower().strip("1234567890!@#$%^&*()_+-=") == "tests"
+                    or entry.name.lower().strip("1234567890!@#$%^&*()_+-=") in dsdn
                 ):
                     version_files.extend(recursive_find(entry.path))
                 elif entry.name == "__init__.py" and entry.is_file():
@@ -59,5 +66,13 @@ def change_version(version_to_change_to: str, contents: str) -> str:  # noqa D10
 
 
 def SyncVersion(version: str, root_dir: str) -> None:
+    """Short summary.
+
+    :param str version: Description of parameter `version`.
+    :param str root_dir: Description of parameter `root_dir`.
+    :return: Description of returned object.
+    :rtype: None
+
+    """
     for file in find_version_files(root_dir):
         file.write_text(change_version(version, file.read_text()))
