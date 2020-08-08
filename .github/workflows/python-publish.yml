@@ -32,5 +32,4 @@ jobs:
         POETRY_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
         poetry config repo.test https://test.pypi.org/legacy/
-        poetry build
-        poetry publish -r test -u $POETRY_USERNAME -p $POETRY_PASSWORD
+        poetry publish --build -r test -u $POETRY_USERNAME -p $POETRY_PASSWORD
