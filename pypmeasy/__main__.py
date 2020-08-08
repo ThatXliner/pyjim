@@ -22,12 +22,12 @@ def main():  # noqa
     from os import path
 
     sys.path.insert(0, "..")
-    from pyproj import __version__
+    from pypmeasy import __version__
 
     parser = argparse.ArgumentParser(
         description="""A setup.py-integrated project manager that actually makes life
         easier.""",
-        prog="pyproj",
+        prog="pypmeasy",
         epilog="""We're no hippocrites: poetry was the only thing that was 'good' enough
         at the time""",
         # usage="pyproj [-h] {version, info, upload, build, help} ..."
@@ -79,7 +79,7 @@ def main():  # noqa
         "upload",
         help="""This command will *print* the
         command to upload your project to PyPi or TestPyPi. It should be used like this:
-        pyproj upload | xargs /bin/bash/
+        pypmeasy upload | xargs /bin/bash/
     """,
     )
     build_command = subcommands.add_parser(
@@ -87,7 +87,7 @@ def main():  # noqa
         help="""This command will *print* the command to build your project
         to be ready for distribution.
 
-        It should be used like this: pyproj build | xargs /bin/bash/ """,
+        It should be used like this: pypmeasy build | xargs /bin/bash/ """,
     )
     build_command.add_argument(
         "arguments",

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pyproj"
+name = "pypmeasy"
 version = "0.1.0"
 description = "A setup.py-integrated project manager that actually makes life easier."
 authors = ["Bryan Hu (theXliner) <bryan.hu.cn@gmail.com>"]
