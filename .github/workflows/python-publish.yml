@@ -29,6 +29,7 @@ jobs:
         env:
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          TWINE_REPOSITORY_URL: https://test.pypi.org/legacy/
         run: |
           poetry build
-          twine upload -r https://test.pypi.org/legacy/ dist/*
+          twine upload --repository-url https://test.pypi.org/legacy/ dist/*
