@@ -24,7 +24,7 @@ class TestClass(object):
         assert __version__ == "0.1.0"
 
     def test_sync_version(self):
-        return SyncVersion.find_version_files("/Users/bryanhu/projects/pyproj/")
+        return SyncVersion.find_version_files(str(path.dirname(path.dirname(path.abspath(__file__)))))
 
 
-print(TestClass().test_sync_version())
+
