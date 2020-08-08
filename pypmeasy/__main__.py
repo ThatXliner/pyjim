@@ -16,7 +16,15 @@ Desc: The main script to use.
 """
 
 
-def main():  # noqa
+def main() -> None:
+    """Short summary.
+
+    Long description.
+
+    :return: This function doesn't return anything.
+    :rtype: None
+
+    """
     import argparse
     import sys
     from os import path
@@ -98,12 +106,12 @@ def main():  # noqa
     help_command = subcommands.add_parser(
         "help", help="For getting help about other commands."
     )
-    args = parser.parse_args(sys.argv[1:])
-    version_args = version_command.parse_args(sys[1:])
-    info_args = info_command.parse_args(sys[1:])
-    build_args = build_command.parse_args(sys.argv[1:])
-    help_args = help_command.parse_args(sys.argv[1:])
-    upload_command = upload_command_.parse_args(sys.argv[1:])
+    args = parser.parse_args(sys.argv[1:])  # noqa
+    version_args = version_command.parse_args(sys[1:])  # noqa
+    info_args = info_command.parse_args(sys[1:])  # noqa
+    build_args = build_command.parse_args(sys.argv[1:])  # noqa
+    help_args = help_command.parse_args(sys.argv[1:])  # noqa
+    upload_command = upload_command_.parse_args(sys.argv[1:])  # noqa
     return None
 
 
