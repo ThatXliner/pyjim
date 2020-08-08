@@ -5,7 +5,7 @@ description = "A setup.py-integrated project manager that actually makes life ea
 authors = ["Bryan Hu (theXliner) <bryan.hu.cn@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = ">=3.4"
+python = ">=3.6"
 blessings = "^1.7"
 
 [tool.poetry.dev-dependencies]
