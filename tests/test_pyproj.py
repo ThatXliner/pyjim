@@ -21,7 +21,7 @@ except ImportError:
 
 class TestClass(object):
     def test_version(self):
-        assert __version__ == "0.1.0"
+        assert __version__ == "0.1.3"
 
     def test_sync_version(self):
         return SyncVersion.find_version_files(

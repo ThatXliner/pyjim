@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pypmeasy"
-version = "0.1.2"
+version = "0.1.3"
 description = "A setup.py-integrated project manager that actually makes life easier."
 authors = ["Bryan Hu (theXliner) <bryan.hu.cn@gmail.com>"]
 license = "MIT"
