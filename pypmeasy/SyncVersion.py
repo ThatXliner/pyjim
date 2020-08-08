@@ -1,3 +1,19 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Author: Bryan Hu .
+
+@Bryan Hu .
+
+Made with love by Bryan Hu .
+
+
+Version: v0.0.1.1
+
+Desc: A description or summary here
+
+"""
+
 from pathlib import Path
 import blessings
 import os
@@ -6,7 +22,9 @@ import re
 # import glob
 
 
-def find_version_files(root_dir: str, dont_search_dir_names: set) -> list:
+def find_version_files(
+    root_dir: str, dont_search_dir_names: set = {"tests", "test"}
+) -> list:
     """You can use this.
 
     This function will find the __init__.py(s) in a nontest directory.
