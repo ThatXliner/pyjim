@@ -1,7 +1,6 @@
 language: python
 os:
   - linux
-  - osx
 python:
   - "nightly"
   - "3.8"
@@ -20,9 +19,6 @@ matrix:
   fast_finish: true
   allow_failures:
     - python: "nightly"
-    - os: osx
-    # - python: "pypy3"
-    # pypy3 is 3.6 so....
 notifications:
   email:
     recipients:
