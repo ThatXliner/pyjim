@@ -4,19 +4,19 @@ import re
 from os import path
 
 try:
-    from pypmeasy import __version__, SyncVersion
+    from pyjim import __version__, SyncVersion
 except ImportError:
     import sys
 
     sys.path.insert(0, str(path.dirname(path.dirname(path.abspath(__file__)))))
     try:
-        from pypmeasy.pypmeasy import __version__, SyncVersion
+        from pyjim.pyjim import __version__, SyncVersion
     except ImportError:
         sys.path.insert(0, str(path.dirname(path.abspath(__file__))))
         try:
-            from pypmeasy import __version__, SyncVersion
+            from pyjim import __version__, SyncVersion
         except ImportError:
-            from ..pypmeasy import __version__, SyncVersion
+            from ..pyjim import __version__, SyncVersion
 
 
 class TestClass(object):

@@ -59,7 +59,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="""A setup.py-integrated project manager that actually makes life
         easier.""",
-        prog="pypmeasy",
+        prog="pyjm",
         epilog="""We're no hippocrites: poetry was the only thing that was 'good' enough
         at the time""",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
