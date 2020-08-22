@@ -8,6 +8,7 @@ dist:
   - focal
 python:
   - "nightly"
+  - "3.9-dev"
   - "3.8"
   - "3.7"
   - "3.6"
@@ -15,12 +16,9 @@ python:
   # - "3.9"
   # 3.9 doesn't exist yet.
 install:
-  # - pip install pytest-asyncio
-#   - pip install -r requirements.txt
-  - pip install poetry
-  - poetry install
+  - pip install -r requirements.txt
 script:
-  - pytest tests/ -vvv --durations=5 --show-capture
+  - pytest tests/ -vvv --durations=5
 cache: pip
 matrix:
   fast_finish: true
