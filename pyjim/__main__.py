@@ -17,9 +17,9 @@ Desc: The main script to use.
 
 
 def main() -> None:
-    """Short summary.
+    """Use this as the entry point.
 
-    Long description.
+    The main driver program for pyjim.
 
     :return: This function doesn't return anything.
     :rtype: None
@@ -29,9 +29,7 @@ def main() -> None:
     # TODO: Explicitly add the usage argument
     import argparse
     import sys
-    from os import path
-
-    # TODO: Replace os.path with pathlib.Path
+    from pathlib import Path  # noqa
 
     # import subprocess
     import shlex
@@ -62,59 +60,63 @@ def main() -> None:
                 raise e
     # t = Terminal()
     parser = argparse.ArgumentParser(
-        description="""A setup.py-integrated project manager that actually makes life
-        easier.""",
+        description="A setup.py-integrated project manager that actually makes life "
+        "easier.",
         prog="pyjm",
-        epilog="""We're no hippocrites: poetry was the only thing that was 'good' enough
-        at the time""",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
+    parser.add_argument(
+        "--no-fancy",
+        action="store_true",
+        help="Don't display fancily. Infers --no-color.",
+        default=False,
+    )
+    parser.add_argument(
+        "--no-color",
+        action="store_true",
+        help="Don't display in color.",
+        default=False,
+    )
     subcommands = parser.add_subparsers(
-        description="The commands to use.", title="Commands", dest="which"
+        description="The main sub-commands to use.", title="Commands", dest="which"
     )
     ####################################################################################
     # VERSION COMMAND ##################################################################
     ####################################################################################
     version_command = subcommands.add_parser(
         "version",
-        help="""
-       Use this to interact with the project's version or to interact with anything
-       version-related. Version control systems not included (for now).""",
-        aliases=["v", "version"],
+        help="These commands are all related with version manipulation, "
+        "version management, and more.",
+        aliases=["ver", "v", "vers"],
     )
     version_command_command = version_command.add_subparsers(
         title="Version manipulation commands",
-        help="Use these commands to manipulate or view the version of this project",
+        help="Use these commands to manipulate or view the version of the project you're "
+        "using pyjim to manage",
         dest="version_command",
     )
     version_info = version_command_command.add_parser(
         "info",
-        help="Display the version information of this project.",
-        aliases=["ver", "v", "vers"],
-    )
-    version_info.add_argument(
-        "--no-fancy",
-        action="store_true",
-        help="Don't display info fancily. Infers --no-color.",
-        default=False,
-    )
-    version_info.add_argument(
-        "--no-color",
-        action="store_true",
-        help="Don't display info in color.",
-        default=False,
+        help="Display the version information of the project you're "
+        "using pyjim to manage",
+        aliases=["info", "i", "in"],
     )
     version_info.add_argument(
         "--raw", action="store_true", default=False, help="Output raw JSON."
     )
+
     version_set = version_command_command.add_parser(
         "set", help="Set the version of this project."
     )
     version_set.add_argument("version", help="The version to set to.")
-    version_pyjim = version_command_command.add_parser(  # noqa
+
+    version_pyjim = version_command_command.add_parser(
         "pyjim",
         help="Display the version information of pyjim.",
-        aliases=["ver", "v", "vers"],
+        aliases=["p", "pjm", "pyjm", "pjym", "pyjym"],
+    )
+    version_pyjim.add_argument(
+        "--major-only", "--m-o", help="Only display the major version of pyjim."
     )
 
     ####################################################################################
@@ -122,34 +124,43 @@ def main() -> None:
     ####################################################################################
     info_command = subcommands.add_parser(
         "info",
-        help="""If you want general information about your project or this tool,
-    use this command.""",
+        help="If you want general information about your project or about this tool, "
+        "use this command.",
+        aliases=["i", "information", "inf", "in"],
     )
     info_command_command = info_command.add_subparsers(
         title="Informative commands",
         help="Use these commands to get general information about something.",
         dest="info_command",
     )
-    info_command_command.add_parser(
+    info_version = info_command_command.add_parser(
         "version",
         help="Get information about the version (either from your project or pyjim)",
+    )
+    info_version.add_argument(
+        "type",
+        nargs=1,
+        help="The type of version get information from",
+        choices=["pyjim", "project", "this"],
     )
     ####################################################################################
     # UPLOAD COMMAND ###################################################################
     ####################################################################################
     upload_command = subcommands.add_parser(
         "upload",
-        help="""This command will *print* the
-       command to upload your project to PyPi or TestPyPi. It should be used like this:
-       pyjim upload | xargs /bin/bash/
-    """,
+        help="This command will upload your project to PyPi or TestPyPi. Depending on "
+        "the settings you provide",
+        aliases=["up", "u", "upl", "publish", "pub", "p"],
     )
     upload_command.add_argument(
-        "build_args",
-        nargs="*",
+        "--arguments",
+        "--args",
+        "-a",
+        nargs="+",
         action="append",
         default="sdist bdist_wheel",
-        help="The arguments to pass to `python setup.py` (which will be ran internally)",
+        help="The arguments to pass to `python setup.py` for building "
+        "(which will be ran internally).",
     )
     upload_command.add_argument(
         "--print-only",
@@ -162,18 +173,16 @@ def main() -> None:
     # BUILD COMMAND ####################################################################
     ####################################################################################
     build_command = subcommands.add_parser(
-        "build",
-        help="""This command will *print* the command to build your project
-       to be ready for distribution.
-
-       It should be used like this: pyjim build | xargs /bin/bash/ """,
+        "build", help="This command will build your project, ready for distribution.",
     )
     build_command.add_argument(
-        "arguments",
-        nargs="*",
+        "--arguments",
+        "--args",
+        "-a",
+        nargs="+",
         action="append",
         default="sdist bdist_wheel",
-        help="The arguments to go with python setup.py",
+        help="The arguments to go with python setup.py for building.",
     )
     ####################################################################################
     # HELP COMMAND #####################################################################
