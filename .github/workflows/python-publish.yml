@@ -32,4 +32,4 @@ jobs:
           TWINE_REPOSITORY_URL: https://test.pypi.org/legacy/
         run: |
           poetry build
-          twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+          twine upload dist/*

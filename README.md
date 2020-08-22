@@ -5,3 +5,5 @@
 ---
 
 README pending...
+
+(It's just yet another python project manager)
