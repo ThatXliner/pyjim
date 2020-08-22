@@ -1,7 +1,6 @@
 language: python
 os: linux
 dist:
-  - trusty
   - precise
   - xenial
   - bionic
@@ -24,6 +23,10 @@ matrix:
   fast_finish: true
   allow_failures:
     - python: "nightly"
+  include:
+    - {}
+    - dist: trusty
+      python: "3.6"
 notifications:
   email:
     recipients:
