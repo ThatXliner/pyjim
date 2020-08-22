@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyjim"
-version = "0.1.0"
+version = "0.1.2"
 description = "A setup.py-integrated project manager that actually makes life easier."
 authors = ["Bryan Hu (theXliner) <bryan.hu.cn@gmail.com>"]
 license = "MIT"

@@ -16,7 +16,9 @@ python:
   # 3.9 doesn't exist yet.
 install:
   # - pip install pytest-asyncio
-  - pip install -r requirements.txt
+#   - pip install -r requirements.txt
+  - pip install poetry
+  - poetry install
 script:
   - pytest tests/ -vvv --durations=5 --show-capture
 cache: pip
