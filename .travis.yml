@@ -21,7 +21,8 @@ cache: pip
 matrix:
   fast_finish: true
   allow_failures:
-    - python: "nightly"x
+    - python: "nightly"
+    - python: "3.9-dev"
 notifications:
   email:
     recipients:
