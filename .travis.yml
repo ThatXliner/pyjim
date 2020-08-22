@@ -1,7 +1,6 @@
 language: python
 os: linux
 dist:
-  - precise
   - xenial
   - bionic
   - focal
@@ -22,11 +21,7 @@ cache: pip
 matrix:
   fast_finish: true
   allow_failures:
-    - python: "nightly"
-  include:
-    - {}
-    - dist: trusty
-      python: "3.6"
+    - python: "nightly"x
 notifications:
   email:
     recipients:
