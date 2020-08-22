@@ -31,6 +31,11 @@ def main() -> None:
     import sys
     from os import path
 
+    # TODO: Replace os.path with pathlib.Path
+
+    # import subprocess
+    import shlex
+
     # from blessings import Terminal
 
     try:
@@ -38,10 +43,10 @@ def main() -> None:
     except ImportError:
         try:
             sys.path.insert(0, "..")
-            from pypmeasy import __version__
+            from pyjim import __version__
         except ImportError:
             try:
-                from pypmeasy import __version__
+                from pyjim import __version__
             except ModuleNotFoundError as e:
                 raise e
 
@@ -52,7 +57,7 @@ def main() -> None:
             import SyncVersion
         except ImportError:
             try:
-                from pypmeasy import SyncVersion
+                from pyjim import SyncVersion
             except ModuleNotFoundError as e:
                 raise e
     # t = Terminal()
@@ -65,7 +70,7 @@ def main() -> None:
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     subcommands = parser.add_subparsers(
-        description="The commands to use.", title="Commands",
+        description="The commands to use.", title="Commands", dest="which"
     )
     ####################################################################################
     # VERSION COMMAND ##################################################################
@@ -73,15 +78,19 @@ def main() -> None:
     version_command = subcommands.add_parser(
         "version",
         help="""
-        Use this to interact with the project's version or to interact with anything
-        version-related. Version control systems not included (for now).""",
+       Use this to interact with the project's version or to interact with anything
+       version-related. Version control systems not included (for now).""",
+        aliases=["v", "version"],
     )
     version_command_command = version_command.add_subparsers(
         title="Version manipulation commands",
         help="Use these commands to manipulate or view the version of this project",
+        dest="version_command",
     )
     version_info = version_command_command.add_parser(
-        "info", help="Display the version information."
+        "info",
+        help="Display the version information of this project.",
+        aliases=["ver", "v", "vers"],
     )
     version_info.add_argument(
         "--no-fancy",
@@ -102,13 +111,28 @@ def main() -> None:
         "set", help="Set the version of this project."
     )
     version_set.add_argument("version", help="The version to set to.")
+    version_pyjim = version_command_command.add_parser(  # noqa
+        "pyjim",
+        help="Display the version information of pyjim.",
+        aliases=["ver", "v", "vers"],
+    )
+
     ####################################################################################
     # INFO COMMAND #####################################################################
     ####################################################################################
     info_command = subcommands.add_parser(
         "info",
         help="""If you want general information about your project or this tool,
- use this command.""",
+    use this command.""",
+    )
+    info_command_command = info_command.add_subparsers(
+        title="Informative commands",
+        help="Use these commands to get general information about something.",
+        dest="info_command",
+    )
+    info_command_command.add_parser(
+        "version",
+        help="Get information about the version (either from your project or pyjim)",
     )
     ####################################################################################
     # UPLOAD COMMAND ###################################################################
@@ -116,9 +140,23 @@ def main() -> None:
     upload_command = subcommands.add_parser(
         "upload",
         help="""This command will *print* the
-        command to upload your project to PyPi or TestPyPi. It should be used like this:
-        pypmeasy upload | xargs /bin/bash/
+       command to upload your project to PyPi or TestPyPi. It should be used like this:
+       pyjim upload | xargs /bin/bash/
     """,
+    )
+    upload_command.add_argument(
+        "build_args",
+        nargs="*",
+        action="append",
+        default="sdist bdist_wheel",
+        help="The arguments to pass to `python setup.py` (which will be ran internally)",
+    )
+    upload_command.add_argument(
+        "--print-only",
+        "-p",
+        action="store_true",
+        default=False,
+        help="To only print the command instead of executing it.",
     )
     ####################################################################################
     # BUILD COMMAND ####################################################################
@@ -126,13 +164,14 @@ def main() -> None:
     build_command = subcommands.add_parser(
         "build",
         help="""This command will *print* the command to build your project
-        to be ready for distribution.
+       to be ready for distribution.
 
-        It should be used like this: pypmeasy build | xargs /bin/bash/ """,
+       It should be used like this: pyjim build | xargs /bin/bash/ """,
     )
     build_command.add_argument(
         "arguments",
         nargs="*",
+        action="append",
         default="sdist bdist_wheel",
         help="The arguments to go with python setup.py",
     )
@@ -142,26 +181,14 @@ def main() -> None:
     help_command = subcommands.add_parser(
         "help", help="For getting help about other commands."
     )
+    help_command.add_argument(
+        "command",
+        help="The command to get help for",
+        choices=["help", "info", "build", "version", "upload"],
+    )
     args = parser.parse_args(sys.argv[1:])  # noqa
-    version_args = version_command.parse_args(sys.argv[1:])  # noqa
-    info_args = info_command.parse_args(sys.argv[1:])  # noqa
-    build_args = build_command.parse_args(sys.argv[1:])  # noqa
-    help_args = help_command.parse_args(sys.argv[1:])  # noqa
-    upload_args = upload_command.parse_args(sys.argv[1:])  # noqa
-    # print("{}{}args:{}".format(t.bold, t.red, t.normal))
-    # print(args)
-    # print("{}{}version_args:{}".format(t.bold, t.red, t.normal))
-    # print(version_args)
-    # print("{}{}build_args:{}".format(t.bold, t.red, t.normal))
-    # print(build_args)
-    # print("{}{}help_args:{}".format(t.bold, t.red, t.normal))
-    # print(help_args)
-    # print("{}{}upload_args:{}".format(t.bold, t.red, t.normal))
-    # print(upload_args)
-    # print("{}{}info_args:{}".format(t.bold, t.red, t.normal))
-    # print(info_args)
-    return None
+    return args
 
 
 if __name__ == "__main__":
-    main()
+    print(main())

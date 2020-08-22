@@ -2,7 +2,9 @@
 from pathlib import Path
 import re
 from os import path
+import pytest
 
+# TODO: Replace all instances of os.path with the more higher level, pathlib.Path
 try:
     from pyjim import __version__, SyncVersion
 except ImportError:
@@ -21,12 +23,23 @@ except ImportError:
 
 class TestClass(object):
     def test_version(self):
-        assert __version__ == "0.1.3"
+        assert __version__ == "0.1.1"
 
+    #     @pytest.mark.parametrize(
+    #     'timeline',
+    #     ([1, 2, 3], [2, 4, 6], [6, 8, 10]),
+    #     indirect=True
+    # )
     def test_sync_version(self):
-        return SyncVersion.find_version_files(
+        assert SyncVersion.find_version_files(
             str(path.dirname(path.dirname(path.abspath(__file__))))
-        )
-
-
-print(list(map(str, TestClass().test_sync_version())))
+        ) == [
+            Path(
+                path.join(
+                    path.join(
+                        path.dirname(path.dirname(path.abspath(__file__))), "pyjim"
+                    ),
+                    "__init__.py",
+                )
+            )
+        ]
