@@ -1,9 +1,6 @@
 language: python
+dist: xenial
 os: linux
-dist:
-  - xenial
-  - bionic
-  - focal
 python:
   - "nightly"
   - "3.9-dev"
@@ -14,15 +11,73 @@ python:
   # - "3.9"
   # 3.9 doesn't exist yet.
 install:
-  - pip install -r requirements.txt
-script:
-  - pytest tests/ -vvv --durations=5
+  - pip install -r requirements.txt || curl https://bootstrap.pypa.io/get-pip.py | python3 && pip install -r requirements.txt
+  - pip3 install pytest
+  - pip3 install -r requirements.txt
+
 cache: pip
-matrix:
+jobs:
+  include:
+    - name: "MacOS Xcode9.4 (Python 3.7.5) test"
+      os: osx
+      osx_image: xcode9.4
+      language: shell
+    - name: "MacOS Xcode10 (Python 3.7.5) test"
+      os: osx
+      osx_image: xcode10
+      language: shell
+    - name: "MacOS Xcode11 (Python 3.7.7) test"
+      os: osx
+      osx_image: xcode11
+      language: shell
+    - name: "MacOS Xcode12 (Python 3.8.3) test"
+      os: osx
+      osx_image: xcode12
+      language: shell
+    - name: "3.6.8 on Windows"
+      os: windows # Windows 10.0.17134 N/A Build 17134
+      language: shell # 'language: python' is an error on Travis CI Windows
+      before_install:
+        - choco install python --version 3.6.8
+        - python --version
+        - python -m pip install --upgrade pip
+        - pip3 install --upgrade pytest
+        - pip3 install codecov
+      env: PATH=/c/Python35:/c/Python35/Scripts:$PATH
+    - name: "3.6.7 on Windows"
+      os: windows # Windows 10.0.17134 N/A Build 17134
+      language: shell # 'language: python' is an error on Travis CI Windows
+      before_install:
+        - choco install python --version 3.6.7
+        - python --version
+        - python -m pip install --upgrade pip
+        - pip3 install --upgrade pytest
+        - pip3 install codecov
+      env: PATH=/c/Python35:/c/Python35/Scripts:$PATH
+
+    - name: "Unbuntu 12"
+      os: linux
+      dist: precise
+    - name: "Ubuntu 14"
+      os: linux
+      dist: trusty
+    - name: "Ubuntu 16"
+      os: linux
+      dist: xenial
+    - name: "Ubuntu 18"
+      os: linux
+      dist: bionic
+    - name: "Ubuntu 20"
+      os: linux
+      dist: focal
+
   fast_finish: true
   allow_failures:
     - python: "nightly"
     - python: "3.9-dev"
+    - dist: focal
+script:
+  - pytest tests/ -vvv --durations=5
 notifications:
   email:
     recipients:
