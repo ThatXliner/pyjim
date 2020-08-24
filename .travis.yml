@@ -40,9 +40,9 @@ jobs:
       before_install:
         - choco install python --version 3.6.8
         - python --version
-        - python -m pip install --upgrade pip
+        - {python -m pip install --upgrade pip} || curl https://bootstrap.pypa.io/get-pip.py | python
         - pip3 install --upgrade pytest
-        - pip3 install codecov
+#         - pip3 install codecov
       env: PATH=/c/Python35:/c/Python35/Scripts:$PATH
     - name: "3.6.7 on Windows"
       os: windows # Windows 10.0.17134 N/A Build 17134
@@ -50,9 +50,9 @@ jobs:
       before_install:
         - choco install python --version 3.6.7
         - python --version
-        - python -m pip install --upgrade pip
+        - {python -m pip install --upgrade pip} || curl https://bootstrap.pypa.io/get-pip.py | python
         - pip3 install --upgrade pytest
-        - pip3 install codecov
+#         - pip3 install codecov
       env: PATH=/c/Python35:/c/Python35/Scripts:$PATH
 
     - name: "Unbuntu 12"
