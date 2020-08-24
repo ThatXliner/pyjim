@@ -34,26 +34,6 @@ jobs:
       os: osx
       osx_image: xcode12
       language: shell
-    - name: "3.6.8 on Windows"
-      os: windows # Windows 10.0.17134 N/A Build 17134
-      language: shell # 'language: python' is an error on Travis CI Windows
-      before_install:
-        - choco install python --version 3.6.8
-        - python --version
-        - {python -m pip install --upgrade pip} || curl https://bootstrap.pypa.io/get-pip.py | python
-        - pip3 install --upgrade pytest
-#         - pip3 install codecov
-      env: PATH=/c/Python35:/c/Python35/Scripts:$PATH
-    - name: "3.6.7 on Windows"
-      os: windows # Windows 10.0.17134 N/A Build 17134
-      language: shell # 'language: python' is an error on Travis CI Windows
-      before_install:
-        - choco install python --version 3.6.7
-        - python --version
-        - {python -m pip install --upgrade pip} || curl https://bootstrap.pypa.io/get-pip.py | python
-        - pip3 install --upgrade pytest
-#         - pip3 install codecov
-      env: PATH=/c/Python35:/c/Python35/Scripts:$PATH
 
     - name: "Unbuntu 12"
       os: linux
@@ -70,14 +50,13 @@ jobs:
     - name: "Ubuntu 20"
       os: linux
       dist: focal
-
   fast_finish: true
   allow_failures:
     - python: "nightly"
     - python: "3.9-dev"
     - dist: focal
 script:
-  - pytest tests/ -vvv --durations=5
+  - pytest tests/ -vvv --durations=3
 notifications:
   email:
     recipients:
