@@ -2,8 +2,8 @@ language: python
 os: linux
 dist:
   - xenial
-  - bionic
-  - focal
+  # - bionic
+  # - focal
 python:
   - "nightly"
   - "3.9-dev"
@@ -16,13 +16,17 @@ python:
 install:
   - pip install -r requirements.txt
 script:
-  - pytest tests/ -vvv --durations=5
+  - pytest tests/ -vvv --durations=3
 cache: pip
 matrix:
   fast_finish: true
   allow_failures:
     - python: "nightly"
     - python: "3.9-dev"
+  include:
+    - {}
+    - dist: focal
+    - dist: bionic
 notifications:
   email:
     recipients:

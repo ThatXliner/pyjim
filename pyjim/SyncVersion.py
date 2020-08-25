@@ -21,6 +21,12 @@ import re
 import logging
 import warnings
 
+NONE_ALPHABET = re.compile(r"[^a-zA-Z]")
+FIND_VERSION = re.compile(
+    r"(.|\s)*(__version__\s*=\s*)(?:(?<!\\)(\"|'))(.*)(?:(?<!\\)\3)(.|\s)*",
+    flags=re.IGNORECASE,
+)
+
 
 def find_version_files(
     root_dir: str, dont_search_dir_names: set = {"tests", "test"}
@@ -34,16 +40,8 @@ def find_version_files(
     :rtype: List[Path]
 
     """
-    root_dir = (
-        Path(str(root_dir)).expanduser()
-        if not isinstance(root_dir, str)
-        else Path(root_dir).expanduser()
-    )
-    dont_search_dir_names = (
-        set(dont_search_dir_names)
-        if not isinstance(dont_search_dir_names, set)
-        else dont_search_dir_names
-    )
+    root_dir = Path(str(root_dir)).expanduser()
+    dont_search_dir_names = set(map(str, dont_search_dir_names))
 
     try:
         assert root_dir.exists() and root_dir.is_dir()
@@ -60,7 +58,7 @@ def find_version_files(
             for entry in scan_rd:
                 if entry.is_dir() and not (
                     entry.name.startswith(".")
-                    or entry.name.lower().strip("1234567890!@#$%^&*()_+-=") in dsdn
+                    or NONE_ALPHABET.sub("", entry.name.lower()) in dsdn
                 ):
                     version_files.extend(recursive_find(entry.path, dsdn))
                 elif entry.name == "__init__.py" and entry.is_file():
@@ -73,21 +71,10 @@ def find_version_files(
 def assignment_change_version(
     version_to_change_to: str, contents: str
 ) -> str:  # noqa D103
-    version_to_change_to = (
-        str(version_to_change_to)
-        if not isinstance(version_to_change_to, str)
-        else version_to_change_to
-    )
-    match = re.search(
-        r"(.|\s)*(__version__\s*=\s*)(.*)(.|\s)*", contents, flags=re.IGNORECASE
-    )
+    version_to_change_to = str(version_to_change_to)
+    match = FIND_VERSION.search(contents)
     if match:
-        return (
-            match.group(1)
-            + match.group(2)
-            + repr(version_to_change_to)
-            + match.group(3)
-        )
+        return match.group(2) + repr(version_to_change_to)
     else:
         raise ValueError(
             "Could not find __version__ variable.\n\nFile contents:\n{}".format(
@@ -135,3 +122,32 @@ def SyncVersion(version: str, root_dir: str, log: bool = True) -> None:
                     "Could not find __version__ magic variable in {} .".format(file)
                 )
                 continue
+
+
+def find_version(file):
+    """Retrieve the version.
+
+    :param type file: Description of parameter `file`.
+    :return: Description of returned object.
+    :rtype: type
+
+    """
+    if hasattr(file, "read"):
+        return FIND_VERSION.search(file.read())[4]
+    elif hasattr(file, "read_text"):
+        return FIND_VERSION.search(file.read_text())[4]
+    elif hasattr(file, "__str__"):
+        return FIND_VERSION.search(str(file))[4]
+    else:
+        return FIND_VERSION.search(file)[4]
+    # from io import StringIO, TextIOBase
+    #
+    # if file is Path:
+    #
+    #     return FIND_VERSION.search(file.read_text())[4]
+    # elif file is StringIO:
+    #     ...
+    # elif file is TextIOBase:
+    #     return FIND_VERSION.search(file)[4]
+    # elif file is str:
+    #     return FIND_VERSION.search(file)[4]

@@ -30,6 +30,8 @@ def main() -> None:
     import argparse
     import sys
     from pathlib import Path  # noqa
+    from json import dumps
+    import os
 
     # import subprocess
     import shlex
@@ -99,14 +101,14 @@ def main() -> None:
         "info",
         help="Display the version information of the project you're "
         "using pyjim to manage",
-        aliases=["info", "i", "in"],
+        aliases=["i", "in", "inf"],
     )
     version_info.add_argument(
         "--raw", action="store_true", default=False, help="Output raw JSON."
     )
 
     version_set = version_command_command.add_parser(
-        "set", help="Set the version of this project."
+        "set", help="Set the version of this project.", aliases=["s"]
     )
     version_set.add_argument("version", help="The version to set to.")
 
@@ -196,7 +198,25 @@ def main() -> None:
         choices=["help", "info", "build", "version", "upload"],
     )
     args = parser.parse_args(sys.argv[1:])  # noqa
-    return args
+    ####################################################################################
+    # VERSION COMMAND PARSE ############################################################
+    ####################################################################################
+
+    if args.which in ["ver", "v", "vers", "version"]:
+        # INFO
+        PROJECT_VERSION = SyncVersion.find_version_files(
+            os.getcwd(), dont_search_dir_names="tests"
+        )[0]
+        if args.version_command in ["info", "i", "in", "inf"]:
+            if args.raw:  # Output raw JSON
+
+                print(
+                    dumps(
+                        {"pyjim": __version__, "project": PROJECT_VERSION},
+                        indent=4,
+                        sort_keys=True,
+                    )
+                )
 
 
 if __name__ == "__main__":
