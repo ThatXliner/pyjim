@@ -1,0 +1,11 @@
+{
+  "Python": {
+    "beautifiers": [
+      "Black",
+      "YAPF"
+    ],
+    "indent_size": 4,
+    "indent_style": "space",
+    "wrap_line_length": 90
+  }
+}
