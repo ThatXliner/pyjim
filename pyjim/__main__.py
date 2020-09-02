@@ -175,7 +175,8 @@ def main() -> None:
     # BUILD COMMAND ####################################################################
     ####################################################################################
     build_command = subcommands.add_parser(
-        "build", help="This command will build your project, ready for distribution.",
+        "build",
+        help="This command will build your project, ready for distribution.",
     )
     build_command.add_argument(
         "--arguments",
