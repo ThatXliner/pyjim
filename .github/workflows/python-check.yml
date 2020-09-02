@@ -35,6 +35,10 @@ jobs:
           pip install flake8 pytest
           pip install -r dev-requirements.txt
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Test with pytest
+        run: |
+          make test || pytest tests/ -vvv --durations=3
+
       - name: Lint with flake8
 #         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
 #         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
@@ -42,6 +46,3 @@ jobs:
           # stop the build if there are Python syntax errors or undefined names
           flake8 . --count --show-source --statistics --max-complexity=10
 
-      - name: Test with pytest
-        run: |
-          make test || pytest tests/ -vvv --durations=3
