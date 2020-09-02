@@ -2,7 +2,7 @@
   "Python": {
     "beautifiers": [
       "Black",
-      "YAPF"
+      "autopep8"
     ],
     "indent_size": 4,
     "indent_style": "space",
