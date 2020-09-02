@@ -44,5 +44,5 @@ jobs:
 #         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
         run: |
           # stop the build if there are Python syntax errors or undefined names
-          flake8 . --count --show-source --statistics --max-complexity=100
+          flake8 . --count --show-source --statistics --max-complexity=20
 
