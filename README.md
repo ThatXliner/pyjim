@@ -7,6 +7,8 @@
 
 ---
 
+ARCHIVED: I got used to poetry
+
 README pending...
 
 (It's just yet another python project manager)
