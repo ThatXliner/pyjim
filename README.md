@@ -7,7 +7,7 @@
 
 ---
 
-ARCHIVED: I got used to poetry
+**ARCHIVED: I got used to poetry**
 
 README pending...
 
